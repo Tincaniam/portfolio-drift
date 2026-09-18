@@ -82,7 +82,7 @@ An optional [GitHub Actions workflow](docs/github-actions-ci.yml) runs these Rub
 
 ## Scope and learning
 
-This is an AI-assisted hobby project intended for learning Rails conventions and practicing explanation of the code. It uses fictional symbols and manually entered dollar values. It does not connect to a brokerage, use live prices, or place trades. The preview excludes taxes, fees, tax lots, and trading restrictions.
+This is a hobby project intended for learning Rails conventions and practicing explanation of the code. It uses fictional symbols and manually entered dollar values. It does not connect to a brokerage, use live prices, or place trades. The preview excludes taxes, fees, tax lots, and trading restrictions.
 
 The app is a local, single-user demo without authentication or authorization. Adding user-owned portfolios would be necessary before hosting it as a shared service. It does not demonstrate production portfolio-management or tax-optimization expertise.
 

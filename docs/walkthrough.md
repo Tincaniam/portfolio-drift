@@ -41,5 +41,3 @@ The service starts with 1 cent each. It gives the first remaining cent to the th
 - Explain why an asset with 0% target is valid, while a portfolio worth $0 is not.
 - Change the default drift threshold and verify its behavior in the browser.
 - Add one validation or feature and a meaningful test before presenting the project as hands-on practice.
-
-The README identifies this as AI-assisted work. Use the project to develop familiarity, and describe your own changes and what you can explain accurately.

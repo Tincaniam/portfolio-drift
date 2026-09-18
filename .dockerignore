@@ -1,0 +1,9 @@
+.git
+.github
+.bundle
+.env*
+config/*.key
+log/*
+tmp/*
+vendor/bundle
+docs/*.png

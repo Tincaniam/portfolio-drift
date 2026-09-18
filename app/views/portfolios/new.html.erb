@@ -1,0 +1,4 @@
+<% content_for :title, "New portfolio | Portfolio Drift" %>
+<%= link_to "← All portfolios", portfolios_path, class: "back-link" %>
+<section class="page-heading"><div><p class="eyebrow">Build a portfolio</p><h1>Start with the holdings.</h1><p class="muted">Use sample values to explore how allocations change.</p></div></section>
+<%= render "form", portfolio: @portfolio %>

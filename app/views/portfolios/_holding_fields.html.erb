@@ -1,0 +1,8 @@
+<div class="holding-row" data-allocation-target="row" <%= "hidden" if f.object.marked_for_destruction? %>>
+  <%= f.hidden_field :id if f.object.persisted? %>
+  <%= f.hidden_field :_destroy, data: { allocation_target: "destroy" } %>
+  <div><%= f.label :symbol %><%= f.text_field :symbol, required: true, maxlength: 10, placeholder: "USSTK", autocomplete: "off" %></div>
+  <div><%= f.label :market_value, "Current value ($)" %><%= f.number_field :market_value, required: true, min: 0, max: 999999999999.99, step: "0.01", placeholder: "0.00", inputmode: "decimal" %></div>
+  <div><%= f.label :target_percent, "Target (%)" %><%= f.number_field :target_percent, required: true, min: 0, max: 100, step: "0.01", placeholder: "0", inputmode: "decimal", data: { allocation_target: "weight", action: "input->allocation#update" } %></div>
+  <button type="button" class="remove-button" data-action="allocation#remove" aria-label="Remove holding">Remove</button>
+</div>

@@ -1,0 +1,29 @@
+services:
+  db:
+    image: postgres:16-bookworm
+    environment:
+      POSTGRES_USER: portfolio
+      POSTGRES_PASSWORD: portfolio
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U portfolio"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+  web:
+    build: .
+    ports:
+      - "127.0.0.1:3000:3000"
+    environment:
+      RAILS_ENV: development
+      PGHOST: db
+      PGUSER: portfolio
+      PGPASSWORD: portfolio
+    depends_on:
+      db:
+        condition: service_healthy
+    command: sh -c "bin/rails db:prepare && bin/rails server -b 0.0.0.0"
+
+volumes:
+  postgres_data:

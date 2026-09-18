@@ -1,0 +1,4 @@
+<% content_for :title, "Edit #{@portfolio.name} | Portfolio Drift" %>
+<%= link_to "← Back to portfolio", @portfolio, class: "back-link" %>
+<section class="page-heading"><div><p class="eyebrow">Adjust the mix</p><h1>Edit portfolio</h1><p class="muted">Update current values or try a different target allocation.</p></div></section>
+<%= render "form", portfolio: @portfolio %>

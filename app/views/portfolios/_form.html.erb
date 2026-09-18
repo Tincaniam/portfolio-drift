@@ -1,0 +1,18 @@
+<%= form_with model: portfolio, class: "panel portfolio-form", data: { controller: "allocation" } do |f| %>
+  <% if portfolio.errors.any? %>
+    <div class="errors" role="alert"><h2>Please check your portfolio</h2><ul><% portfolio.errors.full_messages.each do |message| %><li><%= message %></li><% end %></ul></div>
+  <% end %>
+  <div class="name-field"><%= f.label :name, "Portfolio name" %><%= f.text_field :name, required: true, maxlength: 80, placeholder: "e.g. Long-term savings" %></div>
+  <div class="section-heading"><h2>Holdings</h2><p class="muted">Use 1–12 unique symbols. Target percentages must total 100%.</p></div>
+  <div data-allocation-target="rows">
+    <%= f.fields_for :holdings do |holding_form| %><%= render "holding_fields", f: holding_form %><% end %>
+  </div>
+  <template data-allocation-target="template">
+    <%= f.fields_for :holdings, Holding.new, child_index: "NEW_RECORD" do |holding_form| %><%= render "holding_fields", f: holding_form %><% end %>
+  </template>
+  <div class="allocation-toolbar">
+    <button type="button" class="button secondary small" data-allocation-target="addButton" data-action="allocation#add">+ Add holding</button>
+    <p class="allocation-total" data-allocation-target="total" aria-live="polite">Targets must total 100%.</p>
+  </div>
+  <div class="form-actions"><%= f.submit portfolio.persisted? ? "Save changes" : "Create portfolio", class: "button" %><%= link_to "Cancel", portfolio.persisted? ? portfolio : portfolios_path, class: "text-link" %></div>
+<% end %>

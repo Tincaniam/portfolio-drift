@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <title><%= content_for(:title) || "Portfolio Drift" %></title>
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <%= csrf_meta_tags %>
+    <%= csp_meta_tag %>
+    <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
+    <%= javascript_importmap_tags %>
+  </head>
+  <body>
+    <a class="skip-link" href="#main">Skip to content</a>
+    <header class="site-header">
+      <%= link_to root_path, class: "brand" do %><span class="brand-mark" aria-hidden="true">↗</span> Portfolio Drift<% end %>
+      <span class="workspace-label"><span aria-hidden="true">●</span> Sample workspace</span>
+    </header>
+    <main id="main" class="container">
+      <% if notice %><div class="notice" role="status"><%= notice %></div><% end %>
+      <%= yield %>
+    </main>
+    <footer class="site-footer">Portfolio Drift <span>Explore allocations with sample data.</span></footer>
+  </body>
+</html>

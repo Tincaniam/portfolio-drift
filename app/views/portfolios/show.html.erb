@@ -1,0 +1,48 @@
+<% content_for :title, "#{@portfolio.name} | Portfolio Drift" %>
+<%= link_to "← All portfolios", portfolios_path, class: "back-link" %>
+<section class="page-heading">
+  <div><p class="eyebrow">Allocation review</p><h1><%= @portfolio.name %></h1><p class="muted">A snapshot of current holdings against your target mix.</p></div>
+  <%= link_to "Edit portfolio", edit_portfolio_path(@portfolio), class: "button secondary" %>
+</section>
+
+<div class="metrics">
+  <article><p>Total value</p><strong><%= number_to_currency(@preview.total_value) %></strong></article>
+  <article><p>Holdings</p><strong><%= @preview.rows.size %></strong></article>
+  <article><p>Largest allocation gap</p><strong><%= number_with_precision(@preview.max_drift, precision: 2) %><small> pp</small></strong></article>
+</div>
+
+<section class="panel" data-controller="drift" data-drift-threshold-value="2">
+  <div class="panel-heading">
+    <div><h2>Holdings and rebalance preview</h2><p class="muted">Positive drift is above target; negative drift is below.</p></div>
+    <label class="threshold">Highlight gaps of
+      <select data-drift-target="threshold" data-action="change->drift#update" aria-label="Drift highlight threshold">
+        <option value="1">1 pp or more</option><option value="2" selected>2 pp or more</option><option value="5">5 pp or more</option>
+      </select>
+    </label>
+  </div>
+  <div class="table-scroll">
+    <table>
+      <caption class="sr-only">Current allocation, targets, and hypothetical trades for <%= @portfolio.name %></caption>
+      <thead><tr><th scope="col">Holding</th><th scope="col" class="numeric">Current value</th><th scope="col" class="numeric">Current</th><th scope="col" class="numeric">Target</th><th scope="col" class="numeric">Drift</th><th scope="col" class="numeric">Target value</th><th scope="col" class="numeric">Preview</th></tr></thead>
+      <tbody>
+        <% @preview.rows.each do |row| %>
+          <tr data-drift-target="row" data-gap="<%= row.drift.abs %>">
+            <th scope="row"><%= row.holding.symbol %><span class="attention-dot" aria-hidden="true"></span></th>
+            <td class="numeric"><%= number_to_currency(row.holding.market_value) %></td>
+            <td class="numeric"><%= percent(row.current_percent) %></td>
+            <td class="numeric"><%= percent(row.holding.target_percent) %></td>
+            <td class="numeric"><%= drift_label(row.drift) %></td>
+            <td class="numeric"><%= number_to_currency(row.target_value) %></td>
+            <td class="numeric"><span class="trade <%= row.trade_value.positive? ? 'buy' : row.trade_value.negative? ? 'sell' : 'hold' %>"><%= trade_label(row.trade_value) %></span></td>
+          </tr>
+        <% end %>
+      </tbody>
+      <tfoot><tr><th scope="row">Total</th><td class="numeric"><%= number_to_currency(@preview.total_value) %></td><td class="numeric">100%</td><td class="numeric">100%</td><td></td><td class="numeric"><%= number_to_currency(@preview.total_value) %></td><td class="numeric">Net $0.00</td></tr></tfoot>
+    </table>
+  </div>
+  <p class="table-note" data-drift-target="summary" aria-live="polite"></p>
+</section>
+<div class="page-footer">
+  <p class="muted">pp = percentage points. Preview assumes unchanged prices and excludes taxes, fees, and trading restrictions. No trades are placed.</p>
+  <%= button_to "Delete portfolio", @portfolio, method: :delete, class: "delete-link", form: { data: { turbo_confirm: "Delete this portfolio and its holdings?" } } %>
+</div>

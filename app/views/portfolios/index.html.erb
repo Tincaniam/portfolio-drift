@@ -1,0 +1,38 @@
+<% content_for :title, "Portfolios | Portfolio Drift" %>
+<section class="page-heading">
+  <div>
+    <p class="eyebrow">Your workspace</p>
+    <h1>A clearer view of allocation.</h1>
+    <p class="muted">Compare where a portfolio is today with where you want it to be.</p>
+  </div>
+  <%= link_to "New portfolio", new_portfolio_path, class: "button" %>
+</section>
+
+<% if @portfolios.any? %>
+  <div class="portfolio-grid">
+    <% @portfolios.each do |portfolio| %>
+      <article class="portfolio-card">
+        <span class="eyebrow"><%= pluralize(portfolio.holdings.size, "holding") %></span>
+        <h2><%= link_to portfolio.name, portfolio %></h2>
+        <p class="portfolio-value"><%= number_to_currency(portfolio.total_value) %></p>
+        <p class="muted">Current portfolio value</p>
+        <div class="card-footer">
+          <span><%= portfolio.holdings.map(&:symbol).sort.join(" · ") %></span>
+          <%= link_to "Review allocation →", portfolio, class: "text-link" %>
+        </div>
+      </article>
+    <% end %>
+  </div>
+<% else %>
+  <section class="empty-state">
+    <h2>Start with a simple portfolio</h2>
+    <p>Add holdings and target percentages. We'll calculate the allocation and a rebalance preview.</p>
+    <%= link_to "Create your first portfolio", new_portfolio_path, class: "button" %>
+  </section>
+<% end %>
+
+<section class="explainer">
+  <div><span class="step-number">01</span><h3>Enter holdings</h3><p>Add the current dollar value of each position.</p></div>
+  <div><span class="step-number">02</span><h3>Set your targets</h3><p>Choose percentages that add up to 100%.</p></div>
+  <div><span class="step-number">03</span><h3>Review the difference</h3><p>See allocation drift and hypothetical buy or sell amounts.</p></div>
+</section>

@@ -1,7 +1,5 @@
 # Portfolio Drift
 
-[![CI](https://github.com/Tincaniam/portfolio-drift/actions/workflows/ci.yml/badge.svg)](https://github.com/Tincaniam/portfolio-drift/actions/workflows/ci.yml)
-
 A small Ruby on Rails learning project for exploring an advisor's portfolio allocation workflow. Enter holdings and target weights, see which positions have drifted, and preview the dollar amounts needed to rebalance.
 
 ![Portfolio allocation and rebalance preview](docs/portfolio-preview.png)
@@ -16,7 +14,7 @@ A small Ruby on Rails learning project for exploring an advisor's portfolio allo
 
 ## Stack
 
-Ruby 3.3, Rails 8.1, PostgreSQL 16, ERB, Turbo, and Stimulus. JavaScript uses Rails import maps; no Node build step. Tests use Minitest. GitHub Actions runs tests, RuboCop, Brakeman, and a Docker startup check.
+Ruby 3.3, Rails 8.1, PostgreSQL 16, ERB, Turbo, and Stimulus. JavaScript uses Rails import maps; no Node build step. Tests use Minitest.
 
 ## Run locally
 
@@ -77,6 +75,10 @@ bin/brakeman --no-pager --exit-on-warn --exit-on-error
 ```
 
 The tests cover invalid allocations, duplicate symbols, zero and negative values, nested updates/removals, rollback on invalid edits, deletion, and cent rounding. A browser pass also checks the Stimulus interactions and mobile layout.
+
+Local verification: 25 tests and 133 assertions pass; RuboCop reports no offenses and Brakeman reports no warnings. Browser checks cover creating, editing, deleting, validation errors, live totals, threshold changes, and the mobile layout. Docker startup has not yet been verified.
+
+An optional [GitHub Actions workflow](docs/github-actions-ci.yml) runs these Ruby checks and a Docker startup check. It is not enabled in this repository: the publishing connection lacks workflow permission. To enable it with an authorized GitHub sign-in, move the file to `.github/workflows/ci.yml` and commit it.
 
 ## Scope and learning
 

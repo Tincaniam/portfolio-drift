@@ -1,0 +1,43 @@
+name: CI
+on: [push, pull_request]
+
+permissions:
+  contents: read
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      postgres:
+        image: postgres:16
+        env:
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        ports: ["5432:5432"]
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 5s
+          --health-timeout 5s
+          --health-retries 10
+    env:
+      RAILS_ENV: test
+      PGHOST: localhost
+      PGUSER: postgres
+      PGPASSWORD: postgres
+    steps:
+      - uses: actions/checkout@v5
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: '3.3'
+          bundler-cache: true
+      - run: bin/rails db:prepare
+      - run: bin/rails test
+      - run: bin/rubocop
+      - run: bin/brakeman --no-pager --exit-on-warn --exit-on-error
+      - name: Check Docker startup
+        run: |
+          docker compose up --build -d --wait
+          curl --fail --retry 12 --retry-connrefused --retry-delay 2 http://127.0.0.1:3000/
+      - name: Stop containers
+        if: always()
+        run: docker compose down
